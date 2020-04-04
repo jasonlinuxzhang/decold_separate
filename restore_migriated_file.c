@@ -98,7 +98,7 @@ void restore_migrated_files(char *temp_migrated_file_path, GHashTable *recently_
 		t->sizes = malloc(sizeof(int32_t) * t->num);
 		t->fp_cids = malloc(sizeof(uint64_t) * t->num);
 
-		printf("read migriated files:%ld chunknum:%d\n", t->fid, t->num);
+		//printf("read migriated files:%ld chunknum:%d\n", t->fid, t->num);
 	    	uint64_t j = 0;
 		// fps
 	    	for (j = 0; j < p->total_num; j++) {
@@ -146,7 +146,7 @@ void restore_migrated_files(char *temp_migrated_file_path, GHashTable *recently_
                 		ruc->data = data;
 				memcpy(&ruc->fp, &p->fps[j], sizeof(fingerprint));
 				add_chunk_to_container(storage_buffer.container_buffer, ruc);
-				g_hash_table_insert(recently_unique_chunks, &p->fps[i], ruc);
+				g_hash_table_insert(recently_unique_chunks, &p->fps[j], ruc);
 				
 				t->fp_cids[j] = ruc->id;
 				t->sizes[j] = ruc->size;
@@ -266,9 +266,9 @@ void *write_migriated_files_to_destor_thread(void *arg) {
 	    memcpy(recordbuf + recordbufoff, &one_file->sizes[i], sizeof(one_file->sizes[i])); 
 	    recordbufoff += sizeof(one_file->sizes[i]);
 
-	    char code[41] = {0};
-	    hash2code(one_file->fps[i], code);
-	    printf("write migratied files fp:%s cid:%lu size:%d to %ld\n", code, one_file->fp_cids[i], one_file->sizes[i], recipe_offset - (one_file->num) * one_chunk_size);
+	    //char code[41] = {0};
+	    //hash2code(one_file->fps[i], code);
+	    //printf("write migratied files fp:%s cid:%lu size:%d to %ld\n", code, one_file->fp_cids[i], one_file->sizes[i], recipe_offset - (one_file->num) * one_chunk_size);
 	}
 	number_of_files++;	
     }

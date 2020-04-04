@@ -130,7 +130,7 @@ no_ghash:
 	identified_files[i].fp_cids = (uint64_t *)malloc(sizeof(uint64_t) * identified_files[i].num);		
 	identified_files[i].sizes = (int32_t *)malloc(sizeof(int32_t) * identified_files[i].num); 
 
-	printf("read file:%lu chunk:%lu from temp file:%s\n", identified_files[i].fid, identified_files[i].num, temp_identified_file_path);	
+	//printf("read file:%lu chunk:%lu from temp file:%s\n", identified_files[i].fid, identified_files[i].num, temp_identified_file_path);	
     
 	fingerprint temp_fp;
 	uint64_t j = 0;
@@ -152,7 +152,7 @@ no_ghash:
 	
 	    char code[41] = {0};
 	    hash2code(identified_files[i].fps[j], code);
-	    printf("assign fp:%s size:%d to container:%lu\n", code, identified_files[i].sizes[j], identified_files[i].fp_cids[j]);
+	    //printf("assign fp:%s size:%d to container:%lu\n", code, identified_files[i].sizes[j], identified_files[i].fp_cids[j]);
 	    j++;
 	}
 
@@ -238,9 +238,9 @@ void *write_identified_files_to_destor_thread(void *arg) {
 	    memcpy(recordbuf + recordbufoff, &one_file->sizes[i], sizeof(one_file->sizes[i])); 
 	    recordbufoff += sizeof(one_file->sizes[i]);
 
-	    char code[41] = {0};
-	    hash2code(one_file->fps[i], code);
-	    printf("write identfied files fp:%s cid:%lu size:%d to %ld\n", code, one_file->fp_cids[i], one_file->sizes[i], recipe_offset - (one_file->num) * one_chunk_size);
+	    //char code[41] = {0};
+	    //hash2code(one_file->fps[i], code);
+	    ///printf("write identfied files fp:%s cid:%lu size:%d to %ld\n", code, one_file->fp_cids[i], one_file->sizes[i], recipe_offset - (one_file->num) * one_chunk_size);
 	}
 	number_of_files++;	
     }

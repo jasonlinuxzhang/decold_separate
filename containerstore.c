@@ -45,9 +45,9 @@ int add_chunk_to_container(struct container* c, struct chunk* ck) {
     //assert(!container_overflow(c, ck->size));
     
     char code[41] = {0};
-    hash2code(ck->fp, code);
 
     if (g_hash_table_contains(c->meta.map, &ck->fp)) {
+    	hash2code(ck->fp, code);
 	printf("fp:%s already exist\n", code);
 	ck->id = c->meta.id;
 	return 0;
@@ -57,9 +57,9 @@ int add_chunk_to_container(struct container* c, struct chunk* ck) {
     memcpy(&me->fp, &ck->fp, sizeof(fingerprint));
     me->len = ck->size;
     me->off = c->meta.data_size;
-    memset(code, 0, sizeof(code));
-    hash2code(me->fp, code);
-    myprintf("add fp:%s len:%d off:%d container_id:%lu\n", code, me->len, me->off, c->meta.id);
+    //memset(code, 0, sizeof(code));
+    //hash2code(me->fp, code);
+    //myprintf("add fp:%s len:%d off:%d container_id:%lu\n", code, me->len, me->off, c->meta.id);
 
     g_hash_table_insert(c->meta.map, &me->fp, me);
     c->meta.chunk_num++;
@@ -134,9 +134,9 @@ void write_container(struct container* c) {
         ser_bytes(&me->fp, sizeof(fingerprint));
         ser_bytes(&me->len, sizeof(int32_t));
         ser_bytes(&me->off, sizeof(int32_t));
-        char code[41] = {0};
-        hash2code(me->fp, code);	
-        myprintf("write fp %s off %lu chunk_size %d\n", code, me->off, me->len);
+        //char code[41] = {0};
+        //hash2code(me->fp, code);	
+        //myprintf("write fp %s off %lu chunk_size %d\n", code, me->off, me->len);
     }
 
     ser_end(cur, CONTAINER_META_SIZE);
@@ -163,6 +163,9 @@ static void* append_thread(void *arg) {
 	    break;
 
 	write_container(c);
+	free(c->data);
+	free(c);
+	g_hash_table_destroy(c->meta.map);	
     }
 
     return NULL;
